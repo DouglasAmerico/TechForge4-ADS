@@ -30,13 +30,16 @@ function calcularMediaIdade(consumidores: ConsumidorDTO[]): number {
 }
 
 // 5. Função para encontrar extremos de idade
-function obterExtremosIdade(consumidores: ConsumidorDTO[]): { maisVelho: ConsumidorDTO; maisNovo: ConsumidorDTO } {
-  let maisVelho = consumidores[0];
-  let maisNovo = consumidores[0];
+function obterExtremosIdade(consumidores: ConsumidorDTO[]): { maisVelho: ConsumidorDTO | undefined; maisNovo: ConsumidorDTO | undefined } {
+  let maisVelho: ConsumidorDTO | undefined = consumidores[0];
+  let maisNovo: ConsumidorDTO | undefined = consumidores[0];
 
-  for (const c of consumidores) {
-    if (c.idade > maisVelho.idade) maisVelho = c;
-    if (c.idade < maisNovo.idade) maisNovo = c;
+  if (maisVelho != undefined && maisNovo != undefined) {
+
+    for (const c of consumidores) {
+      if (c.idade > maisVelho.idade) maisVelho = c;
+      if (c.idade < maisNovo.idade) maisNovo = c;
+    }
   }
 
   return { maisVelho, maisNovo };
@@ -56,5 +59,9 @@ console.log("\n=== ANÁLISE ESTATÍSTICA ===");
 console.log(`Média das Idades: ${calcularMediaIdade(listaConsumidores).toFixed(1)} anos`);
 
 const { maisVelho, maisNovo } = obterExtremosIdade(listaConsumidores);
-console.log(`Mais Velho(a): ${maisVelho.nome} (${maisVelho.idade} anos)`);
-console.log(`Mais Novo(a): ${maisNovo.nome} (${maisNovo.idade} anos)`);
+if (maisVelho != undefined && maisNovo != undefined) {
+  console.log(`Mais Velho(a): ${maisVelho.nome} (${maisVelho.idade} anos)`);
+  console.log(`Mais Novo(a): ${maisNovo.nome} (${maisNovo.idade} anos)`);
+} else {
+  console.log("Não foi possível calcular os extremos de idade");
+}
